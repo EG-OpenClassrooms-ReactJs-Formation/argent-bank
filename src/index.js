@@ -7,24 +7,30 @@ import './index.css';
 import Error from './pages/Error/Error';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Profile from './pages/Profile/Profile';
 import reportWebVitals from './reportWebVitals';
 import store from './redux/store';
 import {Provider} from 'react-redux';
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
-        <Header />
+        <Header/>
         <Routes>
-              <Route exact path="/" element={<Home/>}></Route>
-              <Route path="/login" element={<Login/>}></Route>
-              <Route path="/profile" element={<Profile/>}></Route>
-              <Route path="/404" element={<Error/>}/>
-              <Route path="*" element={<Navigate replace to="/404" />} />
-            </Routes>
+            <Route exact path="/" element={<Home/>}></Route>
+            <Route path="/login" element={<Login/>}></Route>
+            <Route 
+              path="/profile" 
+              element={<PrivateRoute><Profile/></PrivateRoute>}
+            ></Route>
+            <Route path="/404" element={<Error/>}/>
+            <Route path="*" element={<Navigate replace to="/404" />} />
+          </Routes>
         </Router>
         <Footer/>
       </Provider>

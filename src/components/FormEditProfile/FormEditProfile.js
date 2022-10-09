@@ -18,9 +18,11 @@ export default function FormEditProfile({setDisplay}) {
     const onChangeFirstName = event => {
         setFirstName(event.target.value)
     }
+    
     const onChangeLastName = event => {
         setLastName(event.target.value)
     }
+
     const handleEditProfile = () => {
         dispatch(
             editprofile({
@@ -29,6 +31,7 @@ export default function FormEditProfile({setDisplay}) {
                 lastName: lastName
             })
         )
+        setDisplay(false)
     }
     return (
     <FormStyled>
