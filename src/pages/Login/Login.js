@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { colors } from '../../utils/style/colors'
 import { MainWrapper, InputLabel, InputStyled, InputWrapper } from '../../utils/style/atoms'
-import { useDispatch } from 'react-redux'
-import { login } from '../../redux/slices/authSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { login, profile } from '../../redux/slices/authSlice'
 import { useNavigate } from "react-router-dom";
 
 const LoginContent = styled.section`
@@ -34,23 +34,30 @@ const LoginButton = styled.button`
     color: ${colors.buttonText};
 `
 export default function Login() {
+  const auth = useSelector((state)=> state.auth)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [remember, setRemember] = useState(false)
+  const [rememberLog, setRememberLog] = useState(false)
   const onChangeUsername = event => {
     setUsername(event.target.value);
   };
   const onChangePassword = event => {
     setPassword(event.target.value);
   };
-
+  
   const handleLogin = async () => {
-    await dispatch(
+    const loginResult = await dispatch(
       login({
         email: username,
-        password: password
+        password: password,
+        rememberLog: rememberLog
+      })
+    )
+    await dispatch(
+      profile({
+        token: loginResult.payload.user.token
       })
     )
     navigate("/");
@@ -71,7 +78,7 @@ export default function Login() {
             <InputStyled type="password" id="password" onChange={onChangePassword}/>
           </InputWrapper>
           <InputRememberWrapper>
-            <input type="checkbox" id="remember-me" />
+            <input type="checkbox" id="remember-me" checked={rememberLog} onChange={e => setRememberLog(e.target.checked)}/>
             <InputRememberlabel htmlFor="remember-me">Remember me</InputRememberlabel>
           </InputRememberWrapper>
 

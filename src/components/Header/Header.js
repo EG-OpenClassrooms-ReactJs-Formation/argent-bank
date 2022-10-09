@@ -1,10 +1,10 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { SrOnly } from '../../utils/style/atoms'
 import argent_logo from '../../assets/img/argentBankLogo.png'
 import { useDispatch, useSelector } from 'react-redux'
-import { logout } from '../../redux/slices/authSlice'
+import { logout, profile } from '../../redux/slices/authSlice'
 
 const MainNav = styled.nav`
   display: flex;
@@ -40,6 +40,8 @@ export default function Header() {
       logout()
     )
   }
+  
+  
   return (
     <MainNav>
       <MainNavLogo to={"/"}>
@@ -57,10 +59,19 @@ export default function Header() {
           
           }
         </MainNavItem>
+        
+        {
+        !auth.token ?
         <MainNavItem to={"/login"} onClick={handleLogout}>
           {/* <i class="fa fa-sign-out"></i> */}
+          Sign in
+        </MainNavItem>
+        :
+        <MainNavItem to={"/"} onClick={handleLogout}>
+        {/* <i class="fa fa-sign-out"></i> */}
           Sign Out
         </MainNavItem>
+        }
       </div>
     </MainNav>
   )

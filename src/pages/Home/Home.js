@@ -77,6 +77,8 @@ const FeatureImage = styled.img`
   border-radius: 50%;
   padding: 1rem;
 `
+
+
 export default function Home() {
   return (
     <main>

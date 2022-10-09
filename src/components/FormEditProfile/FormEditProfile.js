@@ -18,12 +18,13 @@ export default function FormEditProfile({setDisplay}) {
     const onChangeFirstName = event => {
         setFirstName(event.target.value)
     }
-    
+
     const onChangeLastName = event => {
         setLastName(event.target.value)
     }
 
-    const handleEditProfile = () => {
+    const handleEditProfile = (event) => {
+        event.preventDefault()
         dispatch(
             editprofile({
                 token: auth.token,

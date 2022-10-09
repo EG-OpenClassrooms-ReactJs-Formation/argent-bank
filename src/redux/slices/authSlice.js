@@ -17,7 +17,8 @@ export const login = createAsyncThunk(
             //console.log(token)
             const user = {
                 userName: payload.email,
-                token: token
+                token: token,
+                rememberLog: payload.rememberLog
             }
 			return {user}
 		}
@@ -88,12 +89,13 @@ export const editprofile = createAsyncThunk(
             },
 			body: JSON.stringify({firstName: payload.firstName, lastName: payload.lastName})
 		})
+        
 		if (resp.ok){
 			const response = await resp.json()
             const userName = response.body.email
             const firstName = response.body.firstName
             const lastName = response.body.lastName
-            console.log(response)
+            //console.log(response)
             const user = {
                 userName: userName,
                 firstName: firstName,
@@ -106,13 +108,14 @@ export const editprofile = createAsyncThunk(
 
 const createInitialState = ()=>{
     const user = JSON.parse(localStorage.getItem('user'))
-    console.log(user)
+    //console.log(user)
     if (user == undefined){
         return {
             userName: null,
             firstName: null,
             lastName: null,
-            token: null
+            token: null,
+            rememberLog: false,
         }
     }
     else {
@@ -120,7 +123,8 @@ const createInitialState = ()=>{
             userName: user.userName,
             firstName: user.firstName,
             lastName: user.lastName,
-            token: user.token
+            token: user.token,
+            rememberLog: user.rememberLog
         }
     }
 }
@@ -141,18 +145,22 @@ export const authSlice = createSlice({
                 userName: null,
                 firstName: null,
                 lastName: null,
-                token: null
+                token: null,
+                rememberLog: false,
             }
 		}
     },
     extraReducers: {
         [login.fulfilled]: (state, action) => {
-            console.log(action.payload.user)
-            const userlocal = JSON.parse(localStorage.getItem('user'))
-            localStorage.setItem('user', JSON.stringify({userName: action.payload.user.userName, token:action.payload.user.token}));
+            //console.log(action.payload.user)
+            //const userlocal = JSON.parse(localStorage.getItem('user'))
+            if(action.payload.user.rememberLog){
+                localStorage.setItem('user', JSON.stringify({userName: action.payload.user.userName, token:action.payload.user.token}));
+            }
             return {...state, 
                 userName: action.payload.user.userName, 
-                token:action.payload.user.token
+                token:action.payload.user.token,
+                rememberLog: action.payload.user.rememberLog
             }
 			//return action.payload.user
 		},
