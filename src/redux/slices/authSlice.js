@@ -108,7 +108,7 @@ export const editprofile = createAsyncThunk(
 
 const createInitialState = ()=>{
     const user = JSON.parse(localStorage.getItem('user'))
-    //console.log(user)
+    console.log(user)
     if (user == undefined){
         return {
             userName: null,
@@ -155,7 +155,8 @@ export const authSlice = createSlice({
             //console.log(action.payload.user)
             //const userlocal = JSON.parse(localStorage.getItem('user'))
             if(action.payload.user.rememberLog){
-                localStorage.setItem('user', JSON.stringify({userName: action.payload.user.userName, token:action.payload.user.token}));
+                console.log('save the values')
+                localStorage.setItem('user', JSON.stringify({userName: action.payload.user.userName, token:action.payload.user.token}))
             }
             return {...state, 
                 userName: action.payload.user.userName, 
@@ -168,6 +169,15 @@ export const authSlice = createSlice({
             return state
         },
         [profile.fulfilled]: (state, action)=>{
+            const rememberLog = JSON.parse(JSON.stringify(state.rememberLog))
+
+            if(rememberLog === true){
+                var user = JSON.parse(localStorage.getItem('user'))
+                user.firstName = action.payload.user.firstName
+                user.lastName = action.payload.user.lastName
+                user.rememberLog = rememberLog
+                localStorage.setItem('user', JSON.stringify(user))
+            }
             return {...state, 
                 userName: action.payload.user.userName, 
                 firstName: action.payload.user.firstName,

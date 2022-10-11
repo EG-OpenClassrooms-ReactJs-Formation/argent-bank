@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { editprofile, profile } from '../../redux/slices/authSlice'
 import styled from 'styled-components'
 import bank_tree from '../../assets/img/bank-tree.jpeg'
 import icon_chat from '../../assets/img/icon-chat.png'
@@ -80,6 +82,16 @@ const FeatureImage = styled.img`
 
 
 export default function Home() {
+  const dispatch = useDispatch()
+  const auth = useSelector((state)=> state.auth)
+  //console.log(auth)
+  // useEffect(() => {
+	// 	dispatch(
+  //     profile({
+  //       token: auth.token
+  //     })
+  //   );
+	// }, [dispatch])
   return (
     <main>
       <HeroWrapper>
