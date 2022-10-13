@@ -61,7 +61,7 @@ export default function Login() {
           token: loginResult.payload.user.token
         })
       )
-      navigate("/");
+      navigate("/")
     }
   }
 

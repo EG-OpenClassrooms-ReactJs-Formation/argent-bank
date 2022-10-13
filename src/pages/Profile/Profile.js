@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
+
 import styled from 'styled-components'
 import FormEditProfile from '../../components/FormEditProfile/FormEditProfile'
 import TransactionCard from '../../components/TransactionCard/TransactionCard'
@@ -22,15 +24,24 @@ const EditButton = styled.button`
 
 export default function Profile() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [displayFormEdit, setDisplayFormEdit] = useState(false)
   const auth = useSelector((state)=> state.auth)
   //console.log(auth)
   useEffect(() => {
-		dispatch(
-      profile({
-        token: auth.token
-      })
-    );
+		
+    const fetchProfileData = async () => {
+      const profileResult = await dispatch(
+        profile({
+          token: auth.token
+        }))
+        if(profileResult.payload.user.token === null){
+          navigate("/")
+        }
+        return profileResult
+    }
+    fetchProfileData()
+    
 	}, [dispatch])
   
   const mockData = [
