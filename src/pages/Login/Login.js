@@ -55,12 +55,14 @@ export default function Login() {
         rememberLog: rememberLog
       })
     )
-    await dispatch(
-      profile({
-        token: loginResult.payload.user.token
-      })
-    )
-    navigate("/");
+    if(loginResult.payload.user.token !== null){
+      await dispatch(
+        profile({
+          token: loginResult.payload.user.token
+        })
+      )
+      navigate("/");
+    }
   }
 
   return (

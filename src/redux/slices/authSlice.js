@@ -11,6 +11,19 @@ export const login = createAsyncThunk(
 			},
 			body: JSON.stringify(payload)
 		})
+        // on wrong loging creditial
+        if ([400].includes(resp.status)) {
+            // disconnect the user if the token is not valid anymore
+            localStorage.removeItem('user')
+            const user = {
+                userName: null,
+                firstName: null,
+                lastName: null,
+                token: null,
+                rememberLog: false
+            }
+            return {user}
+        }
 		if (resp.ok){
 			const response = await resp.json()
             const token = response.body.token
@@ -64,10 +77,12 @@ export const profile = createAsyncThunk(
                     userName: null,
                     firstName: null,
                     lastName: null,
-                    token: null
+                    token: null,
+                    rememberLog: false
                 }
                 return {user}
             }
+            
         }
 		if (resp.ok){
 			const response = await resp.json()
