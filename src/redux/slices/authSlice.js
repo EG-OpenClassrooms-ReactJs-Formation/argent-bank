@@ -53,9 +53,22 @@ export const profile = createAsyncThunk(
 			// 	'Content-Type': 'application/json',
             //  'Authorization': `Bearer ${payload.token}`
 			//},
-            headers: {Authorization: `Bearer ${payload.token}` }
+            headers: {Authorization: `Bearer ${payload.token}`}
 			//body: JSON.stringify(payload)
 		})
+        if (!resp.ok) {
+            if ([401, 403].includes(resp.status)) {
+                // disconnect the user if the token is not valid anymore
+                localStorage.removeItem('user')
+                const user = {
+                    userName: null,
+                    firstName: null,
+                    lastName: null,
+                    token: null
+                }
+                return {user}
+            }
+        }
 		if (resp.ok){
 			const response = await resp.json()
             const userName = response.body.email
@@ -65,7 +78,8 @@ export const profile = createAsyncThunk(
             const user = {
                 userName: userName,
                 firstName: firstName,
-                lastName: lastName
+                lastName: lastName,
+                token: payload.token
             }
             return {user}
 		}
@@ -99,7 +113,7 @@ export const editprofile = createAsyncThunk(
             const user = {
                 userName: userName,
                 firstName: firstName,
-                lastName: lastName
+                lastName: lastName,
             }
             return {user}
 		}
@@ -178,10 +192,12 @@ export const authSlice = createSlice({
                 user.rememberLog = rememberLog
                 localStorage.setItem('user', JSON.stringify(user))
             }
-            return {...state, 
-                userName: action.payload.user.userName, 
+            return {...state,
+                userName: action.payload.user.userName,
                 firstName: action.payload.user.firstName,
-                lastName: action.payload.user.lastName
+                lastName: action.payload.user.lastName,
+                token: action.payload.user.token,
+                rememberLog: false
             }
         },
         [editprofile.fulfilled]: (state, action)=>{
