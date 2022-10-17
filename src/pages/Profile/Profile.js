@@ -10,7 +10,8 @@ import { MainWrapper, SrOnly } from '../../utils/style/atoms'
 import { colors } from '../../utils/style/colors'
 
 const ProfileHeader = styled.div`
-  color: #fff;
+  //color: #fff;
+  color: black;
   margin-bottom: 2rem;
 `
 const EditButton = styled.button`

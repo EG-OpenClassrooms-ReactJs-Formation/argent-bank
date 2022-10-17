@@ -24,6 +24,7 @@ export const InputWrapper = styled.div`
     flex-direction: column;
     text-align: left;
     margin-bottom: 1rem;
+    
 `
 export const InputLabel = styled.label`
     font-weight: bold;
@@ -31,4 +32,5 @@ export const InputLabel = styled.label`
 export const InputStyled = styled.input`
     padding: 5px;
     font-size: 1.2rem;
+    border-radius: 3px;
 `

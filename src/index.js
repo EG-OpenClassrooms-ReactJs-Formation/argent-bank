@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { HashRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+//import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 import './index.css';
@@ -22,9 +23,9 @@ root.render(
       <Router>
         <Header/>
         <Routes>
-            <Route exact path="/" element={<Home/>}></Route>
+            <Route path="/" element={<Home/>}></Route>
             <Route path="/login" element={<Login/>}></Route>
-            <Route 
+            <Route
               path="/profile" 
               element={<PrivateRoute><Profile/></PrivateRoute>}
             ></Route>

@@ -3,12 +3,29 @@ import { useDispatch, useSelector } from 'react-redux'
 import { editprofile } from '../../redux/slices/authSlice'
 import { InputLabel, InputStyled, InputWrapper } from '../../utils/style/atoms'
 import styled from 'styled-components'
+import { colors } from '../../utils/style/colors'
+
 
 const FormStyled = styled.form`
     display: flex;
     flex-direction: column;
 `
-
+const FormContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding-bottom: 15px;
+`
+const EditButton = styled.button`
+    width: 150px;
+    height: 30px;
+    color: ${colors.editButtonText};
+    background-color: white;
+    border-color: ${colors.editButtonBorder};
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 700;
+`
 export default function FormEditProfile({setDisplay}) {
     const auth = useSelector((state)=> state.auth)
     const dispatch = useDispatch()
@@ -36,14 +53,14 @@ export default function FormEditProfile({setDisplay}) {
     }
     return (
     <FormStyled>
-        <div>
+        <FormContainer>
             <InputStyled type="text" placeholder={firstName} id="firstname" onChange={onChangeFirstName}/>
             <InputStyled type="text" placeholder={lastName} id="lastname" onChange={onChangeLastName}/>
-        </div>
-        <div>
-            <button onClick={handleEditProfile}>Save</button>
-            <button onClick={()=>setDisplay(false)}>Cancel</button>
-        </div>
+        </FormContainer>
+        <FormContainer>
+            <EditButton onClick={handleEditProfile}>Save</EditButton>
+            <EditButton onClick={()=>setDisplay(false)}>Cancel</EditButton>
+        </FormContainer>
     </FormStyled>
   )
 }

@@ -35,10 +35,12 @@ const LoginButton = styled.button`
 `
 export default function Login() {
   const auth = useSelector((state)=> state.auth)
+  
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [displayErrorMessage, setDisplayErrorMessage] = useState(false)
   const [rememberLog, setRememberLog] = useState(false)
   const onChangeUsername = event => {
     setUsername(event.target.value);
@@ -47,7 +49,8 @@ export default function Login() {
     setPassword(event.target.value);
   };
   
-  const handleLogin = async () => {
+  const handleLogin = async (event) => {
+    event.preventDefault()
     const loginResult = await dispatch(
       login({
         email: username,
@@ -55,12 +58,16 @@ export default function Login() {
         rememberLog: rememberLog
       })
     )
+    if(loginResult.payload.user.error === 400){
+      setDisplayErrorMessage(true)
+    }
     if(loginResult.payload.user.token !== null){
       await dispatch(
         profile({
           token: loginResult.payload.user.token
         })
       )
+      console.log('go to home page after login')
       navigate("/")
     }
   }
@@ -80,12 +87,21 @@ export default function Login() {
             <InputStyled type="password" id="password" onChange={onChangePassword}/>
           </InputWrapper>
           <InputRememberWrapper>
-            <input type="checkbox" id="remember-me" checked={rememberLog} onChange={e => setRememberLog(e.target.checked)}/>
+            <input
+              type="checkbox" 
+              id="remember-me" 
+              checked={rememberLog}
+              onChange={e => setRememberLog(e.target.checked)}
+            />
             <InputRememberlabel htmlFor="remember-me">Remember me</InputRememberlabel>
           </InputRememberWrapper>
-
+          {
+            displayErrorMessage === true ?
+            <p>Login ou mot de passe incorrecte.</p>
+            :
+            null
+          }
           <LoginButton onClick={handleLogin}>Sign In</LoginButton>
-          
         </form>
       </LoginContent>
     </MainWrapper>

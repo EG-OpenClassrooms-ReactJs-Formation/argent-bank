@@ -20,7 +20,8 @@ export const login = createAsyncThunk(
                 firstName: null,
                 lastName: null,
                 token: null,
-                rememberLog: false
+                rememberLog: false,
+                error: resp.status
             }
             return {user}
         }
@@ -31,7 +32,8 @@ export const login = createAsyncThunk(
             const user = {
                 userName: payload.email,
                 token: token,
-                rememberLog: payload.rememberLog
+                rememberLog: payload.rememberLog,
+                error: null
             }
 			return {user}
 		}
@@ -78,7 +80,8 @@ export const profile = createAsyncThunk(
                     firstName: null,
                     lastName: null,
                     token: null,
-                    rememberLog: false
+                    rememberLog: false,
+                    error: resp.status
                 }
                 return {user}
             }
@@ -94,7 +97,8 @@ export const profile = createAsyncThunk(
                 userName: userName,
                 firstName: firstName,
                 lastName: lastName,
-                token: payload.token
+                token: payload.token,
+                error: null
             }
             return {user}
 		}
